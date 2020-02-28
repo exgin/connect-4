@@ -1,4 +1,11 @@
 /* game board table */
+body {
+  background: #D3CCE3;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #E9E4F0, #D3CCE3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+}
+
 
 #board td {
   width: 50px;
@@ -15,14 +22,67 @@
   border-radius: 50%;
 }
 
+#game {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputs {
+  position: fixed;
+  height: 50vh;
+}
+
+.p1-color {
+  border-radius:8px;
+  border:1px solid white;
+  outline: none;
+  padding: 3px 30px 3px 5px;
+}
+
+.p2-color {
+  border-radius:8px;
+  border:1px solid white;
+  outline: none;
+  padding: 3px 30px 3px 5px;
+}
+
+.start {
+    background:linear-gradient(to bottom, #ededed 5%, #d3cce3);
+    background-color:#ededed;
+    border-radius:8px;
+    border:1px solid white;
+    display:inline-block;
+    cursor:pointer;
+    color:#777777;
+    font-size:15px;
+    font-weight:bold;
+    padding: 2px 30px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffffff;
+    outline: none;
+}
+
+.start:hover {
+  background:white;
+}
+
+#board {
+  display: table-cell;
+  vertical-align: middle;
+  position: relative;
+}
+
 /*Remove color classes*/
 
 /* column-top is table row of clickable areas for each column */
 
 #column-top td {
-  border: dashed 1px lightgray;
+  border: dashed 2px white;
 }
 
 #column-top td:hover {
-  background-color: gold;
+  background-color: #e9e4f0;
+  cursor: pointer;
 }
