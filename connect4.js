@@ -4,10 +4,27 @@
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
  * board fills (tie)
  */
+document.querySelector('.start').addEventListener('click', () => {
+  let player1 = new Player(document.querySelector('.p1-color').value);
+  let player2 = new Player(document.querySelector('.p2-color').value);
+  // run Game class
+  new Game(player1, player2);
+  // gameBtn.removeEventListener('click', startGame); // make sure we can only click once when btn is clicked to stop multiple games
+
+});
+
+
+class Player {
+  constructor (color) {
+    this.color = color;
+  }
+}
 
 class Game {
-  constructor(height = 6, width = 7, currPlayer = 1){
-    this.currPlayer = currPlayer;
+  constructor(player1, player2, height = 6, width = 7){
+    this.player1 = player1;
+    this.player2 = player2;
+    this.currPlayer = player1;
     this.board = [];
     this.height = height;
     this.width = width;
@@ -16,6 +33,7 @@ class Game {
   }
 
   makeBoard() {
+    this.board = [];
     for (let y = 0; y < this.height; y++) {
       this.board.push(Array.from({ length: this.width }));
     }
@@ -24,10 +42,15 @@ class Game {
   makeHtmlBoard() {
     const board = document.getElementById('board');
   
+    board.innerHTML = ''; // resets EVERY boards code
+    
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
-    top.addEventListener('click', this.handleClick);
+    // top.addEventListener('click', this.handleClick);
+
+    this.handleGameClick = this.handleClick.bind(this);
+    top.addEventListener('click', this.handleGameClick);
   
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement('td');
@@ -63,7 +86,7 @@ class Game {
   placeInTable(y, x) {
     const piece = document.createElement('div');
     piece.classList.add('piece');
-    piece.classList.add(`p${this.currPlayer}`);
+    piece.style.backgroundColor = this.currPlayer.color;
     piece.style.top = -50 * (y + 2);
   
     const spot = document.getElementById(`${y}-${x}`);
@@ -71,6 +94,8 @@ class Game {
   }
   
   endGame(msg) {
+    const top = document.querySelector("#column-top");
+    top.removeEventListener('click', this.handleGameClick);
     alert(msg);
   }
 
@@ -99,15 +124,15 @@ class Game {
     }
       
     // switch players
-    this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+    this.currPlayer = 
+      this.currPlayer === this.player1 ? this.player2 : this.player1;
   }
 
   checkForWin() {
-    function _win(cells) {
+    const _win = (cells) => { // had to change to arrow fn to have access to outside 'this's
       // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
       //  - returns true if all are legal coordinates & all match currPlayer
-  
       return cells.every(
         ([y, x]) =>
           y >= 0 &&
